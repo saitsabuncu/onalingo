@@ -1,16 +1,17 @@
+from rest_framework import viewsets
+from .models import Lesson, Level
+from .serializers import LessonSerializer, LevelSerializer
+from .permissions import IsAdminOrReadOnly
+
+# Level listesi sadece GET olacak şekilde bırakılabilir
 from rest_framework import generics
-from .models import Level, Lesson
-from .serializers import LevelSerializer, LessonSerializer
 
 class LevelListAPIView(generics.ListAPIView):
     queryset = Level.objects.all()
     serializer_class = LevelSerializer
 
-class LessonListAPIView(generics.ListAPIView):
+# Ders CRUD işlemleri için ViewSet kullanalım
+class LessonViewSet(viewsets.ModelViewSet):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
-
-class LessonDetailAPIView(generics.RetrieveAPIView):
-    queryset = Lesson.objects.all()
-    serializer_class = LessonSerializer
-    lookup_field = 'id'
+    permission_classes = [IsAdminOrReadOnly]
