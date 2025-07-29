@@ -16,3 +16,19 @@ class Lesson(models.Model):
 
     def __str__(self):
         return self.title
+
+from django.conf import settings
+
+class UserProgress(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE)
+    completed = models.BooleanField(default=False)
+    favorite = models.BooleanField(default=False)
+    score = models.FloatField(null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ['user', 'lesson']  # Aynı dersi birden fazla kez kayıtlamasın
+
+    def __str__(self):
+        return f"{self.user.username} - {self.lesson.title}"
