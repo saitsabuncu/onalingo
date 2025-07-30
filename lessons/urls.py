@@ -1,5 +1,6 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
+from .views import SpeakingFeedbackListCreateView
 from .views import (
     LevelListAPIView,
     UserProgressListCreateView,
@@ -17,6 +18,7 @@ urlpatterns = [
     path('levels/', LevelListAPIView.as_view(), name='level-list'),
     path('progress/', UserProgressListCreateView.as_view(), name='progress-list-create'),
     path('progress/<int:pk>/', UserProgressDetailView.as_view(), name='progress-detail'),
+    path('speaking/', SpeakingFeedbackListCreateView.as_view(), name='speaking-list-create'),
 ]
 
 # Router URL'lerini ekliyoruz
