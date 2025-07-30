@@ -13,14 +13,21 @@ class LessonViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
 
 class UserProgressListCreateView(generics.ListCreateAPIView):
-    queryset = UserProgress.objects.all()
     serializer_class = UserProgressSerializer
     permission_classes = [permissions.IsAuthenticated]
+    
+    
+    def get_queryset(self):
+        return UserProgress.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
 class UserProgressDetailView(generics.RetrieveUpdateAPIView):
-    queryset = UserProgress.objects.all()
     serializer_class = UserProgressSerializer
     permission_classes = [permissions.IsAuthenticated]
+    
+
+    def get_queryset(self):
+        return UserProgress.objects.filter(user=self.request.user)
+    
