@@ -4,6 +4,8 @@ from .serializers import LessonSerializer, LevelSerializer, UserProgressSerializ
 from .permissions import IsAdminOrReadOnly
 from .models import SpeakingFeedback
 from .serializers import SpeakingFeedbackSerializer
+from .serializers import LessonListSerializer
+
 
 class LevelListAPIView(generics.ListAPIView):
     queryset = Level.objects.all()
@@ -11,8 +13,14 @@ class LevelListAPIView(generics.ListAPIView):
 
 class LessonViewSet(viewsets.ModelViewSet):
     queryset = Lesson.objects.all()
-    serializer_class = LessonSerializer
     permission_classes = [IsAdminOrReadOnly]
+
+    def get_serializer_class(self):
+        # /api/lessons/ -> list
+        if getattr(self, "action", None) == "list":
+            return LessonListSerializer
+        return LessonSerializer
+
 
 class UserProgressListCreateView(generics.ListCreateAPIView):
     serializer_class = UserProgressSerializer

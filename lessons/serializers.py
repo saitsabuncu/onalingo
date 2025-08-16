@@ -8,12 +8,13 @@ class LevelSerializer(serializers.ModelSerializer):
         model = Level
         fields = '__all__'
 
-class LessonSerializer(serializers.ModelSerializer):
-    level = LevelSerializer()  # İlgili seviyeyi de içersin
+# Liste görünümü için sade/okunaklı serializer
+class LessonListSerializer(serializers.ModelSerializer):
+    level = serializers.StringRelatedField()  # "A1", "A2" gibi düz metin
 
     class Meta:
         model = Lesson
-        fields = '__all__'
+        fields = ("id", "title", "level", "audio_url", "transcript")
 
 class UserProgressSerializer(serializers.ModelSerializer):
     class Meta:
